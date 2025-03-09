@@ -7,6 +7,7 @@ import '../../services/cttrain.service.dart';
 import '../../utils/util.dart';
 
 part 'schedules_event.dart';
+
 part 'schedules_state.dart';
 
 class SchedulesBloc extends Bloc<SchedulesEvent, SchedulesState> {
@@ -26,7 +27,8 @@ class SchedulesBloc extends Bloc<SchedulesEvent, SchedulesState> {
   ) {
     isFormVisible = !isFormVisible;
     if (state is SchedulesSuccess) {
-      emit(SchedulesSuccess((state as SchedulesSuccess).schedules, isFormVisible));
+      emit(SchedulesSuccess(
+          (state as SchedulesSuccess).schedules, isFormVisible));
     } // Emit the updated state
   }
 
@@ -38,7 +40,10 @@ class SchedulesBloc extends Bloc<SchedulesEvent, SchedulesState> {
     try {
       final String htmlString =
           await trainService.fetchTrainSchedule(event.formData);
-      final List<Schedule> schedules = Util.parseTrainSchedule(htmlString);
+      final List<Schedule> schedules = Util.parseTrainSchedule(
+        htmlString,
+        event.formData.travelDay,
+      );
       emit(SchedulesSuccess(schedules, isFormVisible));
     } catch (e) {
       emit(

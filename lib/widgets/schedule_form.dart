@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/schedule_form/schedule_form_bloc.dart';
 import '../models/form.model.dart';
+import '../utils/constants.dart';
 
 class ScheduleForm extends StatefulWidget {
   const ScheduleForm({super.key, required this.onSubmit});
@@ -10,7 +11,7 @@ class ScheduleForm extends StatefulWidget {
   final Function onSubmit;
 
   @override
-  _ScheduleFormState createState() => _ScheduleFormState();
+  State<ScheduleForm> createState() => _ScheduleFormState();
 }
 
 class _ScheduleFormState extends State<ScheduleForm> {
@@ -50,12 +51,6 @@ class _ScheduleFormState extends State<ScheduleForm> {
     'Fish Hoek'
   ];
 
-  final Map<String, String> _travelDays = <String, String>{
-    'Mon-Fri': 'Mon-Fri',
-    'Sat': 'Saturday',
-    'Sun': 'Sunday/Public Holidays',
-  };
-
   Future<void> _selectTime(BuildContext context) async {
     // Show time picker dialog
     final TimeOfDay? picked = await showTimePicker(
@@ -71,13 +66,6 @@ class _ScheduleFormState extends State<ScheduleForm> {
 
     if (picked != null && context.mounted) {
       context.read<ScheduleFormBloc>().add(TimeSelected(picked));
-      // setState(() {
-      //   _selectedTime = picked;
-      //
-      //   // Set the selected time into the controller
-      //   _timeController.text =
-      //       picked.format(context); // Formats the time like "12:30 PM"
-      // });
     }
   }
 
@@ -200,9 +188,9 @@ class _ScheduleFormState extends State<ScheduleForm> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                     ),
-                    items: _travelDays.keys.map((String day) {
+                    items: Constants.travelDays.keys.map((String day) {
                       return DropdownMenuItem<String>(
-                        value: _travelDays[day],
+                        value: Constants.travelDays[day],
                         child: Text(day),
                       );
                     }).toList(),

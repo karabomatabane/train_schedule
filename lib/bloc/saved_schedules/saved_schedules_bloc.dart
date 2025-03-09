@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/schedule.model.dart';
 import '../../services/local_storage.service.dart';
+import '../../services/notification.service.dart';
 
 part 'saved_schedules_event.dart';
 part 'saved_schedules_state.dart';
@@ -20,12 +21,12 @@ class SavedSchedulesBloc extends Bloc<SavedSchedulesEvent, SavedSchedulesState> 
   }
 
   final LocalStorageService localStorageService;
+  final NotificationService notificationService = NotificationService();
 
   Future<void> _handleFetchSavedSchedules(
     FetchSavedSchedules event,
     Emitter<SavedSchedulesState> emit,
   ) async {
-    print('Fetching saved schedules');
     // Fetch saved schedules from local storage
     final List<Schedule> savedSchedules = await localStorageService.getScheduleList();
     emit(SavedSchedulesSuccess(savedSchedules));
@@ -36,7 +37,7 @@ class SavedSchedulesBloc extends Bloc<SavedSchedulesEvent, SavedSchedulesState> 
     Emitter<SavedSchedulesState> emit,
   ) async {
     // Save the schedule to local storage
-    final bool isNew = await localStorageService.saveSchedule(event.schedule);
+    await localStorageService.saveSchedule(event.schedule);
     // Fetch saved schedules from local storage
     final List<Schedule> savedSchedules = await localStorageService.getScheduleList();
     emit(SavedSchedulesSuccess(savedSchedules));
@@ -44,11 +45,11 @@ class SavedSchedulesBloc extends Bloc<SavedSchedulesEvent, SavedSchedulesState> 
 
   Future<bool> saveScheduleAndGetResult(Schedule schedule) async {
     final bool isNew = await localStorageService.saveSchedule(schedule);
-    final List<Schedule> savedSchedules = await localStorageService.getScheduleList();
-
+    if (isNew) {
+      notificationService.scheduleNotification(schedule);
+    }
     // Emit the updated state
     add(const FetchSavedSchedules());
-
     return isNew;
   }
 

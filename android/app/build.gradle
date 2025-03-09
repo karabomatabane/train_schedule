@@ -29,6 +29,7 @@ android {
     compileSdkVersion 34
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -36,6 +37,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    ndkVersion "27.0.12077973"
+
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -50,6 +54,7 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -65,4 +70,6 @@ flutter {
     source '../..'
 }
 
-dependencies {}
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.5'
+}

@@ -98,7 +98,7 @@ class _HomePageState extends State<HomePage> {
                   duration: const Duration(milliseconds: 300),
                   // Animation duration
                   height: state.isFormVisible
-                      ? MediaQuery.of(context).size.height * 0.27
+                      ? MediaQuery.of(context).size.height * 0.26
                       : MediaQuery.of(context).size.height * 0.8,
                   // Adjust height based on form visibility
                   child: ListView.builder(
