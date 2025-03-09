@@ -50,7 +50,6 @@ class _HomePageState extends State<HomePage> {
       ),
       body: BlocBuilder<SchedulesBloc, SchedulesState>(
         builder: (BuildContext context, SchedulesState state) {
-          print(state.runtimeType);
           if (state is SchedulesLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is SchedulesFailure) {
@@ -99,8 +98,8 @@ class _HomePageState extends State<HomePage> {
                   duration: const Duration(milliseconds: 300),
                   // Animation duration
                   height: state.isFormVisible
-                      ? 190
-                      : MediaQuery.of(context).size.height * 0.6,
+                      ? MediaQuery.of(context).size.height * 0.27
+                      : MediaQuery.of(context).size.height * 0.8,
                   // Adjust height based on form visibility
                   child: ListView.builder(
                     itemCount: trainSchedules.length,
